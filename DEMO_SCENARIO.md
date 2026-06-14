@@ -40,14 +40,14 @@ The point is not to replace Byreal. The point is to make Byreal's agent skill sm
 Show the install section on the landing page:
 
 ```bash
-npx skills add byreal-git/byreal-perps-cli
 npx skills add jinsuha784-design/clawflow
 ```
 
 Explain:
 
-- `byreal-git/byreal-perps-cli` is the base execution skill.
-- `jinsuha784-design/clawflow` is our fork/custom routing layer.
+- `jinsuha784-design/clawflow` is our wrapped/forked Byreal skill path.
+- It behaves like the Byreal execution skill from the agent's point of view.
+- It intercepts patient limit orders before Byreal execution.
 - The final fill still goes through Byreal Perps.
 - ClawFlow only adds auction, resolver selection, and rebate proof.
 
@@ -258,4 +258,3 @@ Under the hood:
 ## One-Liner
 
 ClawFlow is a forked Byreal Perps skill that lets agents auction patient limit-order flow before execution, so resolvers compete to give users better fills and prepaid rebates.
-

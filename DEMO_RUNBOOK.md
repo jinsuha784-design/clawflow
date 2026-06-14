@@ -269,14 +269,13 @@ Show these sections:
 4. Install section:
 
 ```bash
-npx skills add byreal-git/byreal-perps-cli
 npx skills add jinsuha784-design/clawflow
 ```
 
 Voiceover:
 
 ```text
-This is the product proposal. Byreal can expose this as a native auctioned-limit-order skill path. Users keep using Byreal Perps, but patient orders get an auction layer that returns price improvement and rebate.
+This is the product proposal. ClawFlow is a wrapped Byreal skill path: the agent thinks it is placing a Byreal-style order, but patient limit orders are intercepted, auctioned to resolvers, then handed back to Byreal execution with a rebate proof.
 ```
 
 ## Recommended Video Timeline
@@ -354,4 +353,3 @@ For recording stability, this local run can use dry-run settlement, but here are
 ## One-Sentence Close
 
 ClawFlow turns a Byreal Perps limit order into an agent auction where resolvers compete for the flow, prepay rebate on Mantle, and settle the final receipt on-chain.
-

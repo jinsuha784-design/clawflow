@@ -353,12 +353,12 @@ function Install() {
     <section id="install" className="py-20">
       <H eyebrow="Install" title="Plug ClawFlow into any agent" />
       <p className="mt-3 max-w-2xl text-ink-soft">
-        ClawFlow ships as an OpenClaw skill and an MCP server. Install the Byreal execution skill, add ClawFlow,
-        and point any MCP-capable agent at the auction venue.
+        ClawFlow ships as a wrapped Byreal skill path and an MCP server. Agents keep calling the Byreal-style
+        order skill, while ClawFlow intercepts patient limit orders, runs the resolver auction, then hands execution
+        back to the Byreal path.
       </p>
       <div className="mt-7 space-y-3">
-        <Code title="Byreal Perps execution skill">npx skills add byreal-git/byreal-perps-cli</Code>
-        <Code title="ClawFlow order-flow auction skill">npx skills add jinsuha784-design/clawflow</Code>
+        <Code title="ClawFlow wrapped Byreal auction skill">npx skills add jinsuha784-design/clawflow</Code>
         <Code title="Connect an MCP agent (Streamable HTTP)">https://mcp-server-vert-sigma.vercel.app/mcp</Code>
       </div>
       <p className="mt-5 font-mono text-xs text-ink-faint">
