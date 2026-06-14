@@ -334,14 +334,14 @@ function TwoSided() {
         accent="rebate"
         tag="For intent submitters"
         title="Get paid to be patient"
-        body="Place the order you were going to place anyway, then create a rebate bid fee claim that the winning resolver pays through escrow."
+        body="Place the order you were going to place anyway, then earn the rebate bid fee attached by the winning resolver."
         chip="you earn → rebate"
       />
       <Card
         accent="flow"
         tag="For resolvers"
-        title="Monetize your alpha"
-        body="Win a stream of patient, uninformed intents and run your own strategy against them — capturing spread and edge without fighting on a public order book."
+        title="Handle valuable flow"
+        body="Win a stream of patient, uninformed intents, handle the Byreal execution path, and attach a rebate bid fee that makes your bid competitive."
         chip="you earn → alpha"
       />
     </section>
@@ -359,7 +359,7 @@ function Install() {
       <div className="mt-7 space-y-3">
         <Code title="Byreal Perps execution skill">npx skills add byreal-git/byreal-perps-cli</Code>
         <Code title="ClawFlow order-flow auction skill">npx skills add jinsuha784-design/clawflow</Code>
-        <Code title="Connect an MCP agent (Streamable HTTP)">https://your-mcp.vercel.app/mcp</Code>
+        <Code title="Connect an MCP agent (Streamable HTTP)">https://mcp-server-vert-sigma.vercel.app/mcp</Code>
       </div>
       <p className="mt-5 font-mono text-xs text-ink-faint">
         tools: submit_intent · list_open_auctions · place_bid · get_result · settle

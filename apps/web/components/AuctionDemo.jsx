@@ -316,45 +316,45 @@ function Payoff({ show, order, winner, rebateUsd, resolverAlpha }) {
             <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">You · submitter</span>
             <span className="font-mono text-xs text-ink-soft">{order.agent}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Order placed + rebate claim created</div>
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">You earn the rebate bid fee</div>
           <div className="font-display text-3xl font-extrabold text-rebate">+{usd(rebateUsd)}</div>
           <div className="mt-3 space-y-1.5 font-mono text-xs">
             <Row label={`${order.side.toUpperCase()} ${order.size} ${order.coin} order placed`} value={`limit ${order.limitPrice.toLocaleString()}`} />
-            <Row label="rebate bid fee claim created" value={"+" + usd(rebateUsd)} good />
+            <Row label="rebate bid fee earned by submitter" value={"+" + usd(rebateUsd)} good />
             <Row label="winner resolver attached to the order" value={winner.name} />
           </div>
-          <div className="mt-2 text-[11px] text-ink-faint">the submitter creates the order intent and rebate bid fee claim before settlement</div>
+          <div className="mt-2 text-[11px] text-ink-faint">the submitter places the order intent and earns the rebate bid fee when settlement completes</div>
         </div>
 
         {/* connector */}
         <div className="flex items-center justify-center sm:flex-col sm:px-1">
           <div className="flex flex-col items-center rounded-xl border border-flow-200 bg-white px-3 py-2 text-center shadow-card">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">resolver pays</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">resolver handles</span>
             <span className="font-mono text-sm font-semibold text-flow-600">{usd(rebateUsd)}</span>
             <span className="hidden text-base leading-none text-flow-400 sm:inline">←</span>
             <span className="text-base leading-none text-flow-400 sm:hidden">↑</span>
-            <span className="font-mono text-[10px] text-ink-faint">rebate bid fee</span>
+            <span className="font-mono text-[10px] text-ink-faint">submitter earns</span>
           </div>
         </div>
 
         {/* resolver */}
         <div className="rounded-2xl bg-flow-50 p-5 ring-1 ring-flow-200">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">Resolver · winner</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">Resolver · operator</span>
             <span className="font-mono text-xs text-ink-soft">{winner.name}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Rebate bid fee paid to submitter</div>
-          <div className="font-display text-3xl font-extrabold text-flow-600">−{usd(rebateUsd)}</div>
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Handles order on behalf of submitter</div>
+          <div className="font-display text-3xl font-extrabold text-flow-600">Byreal</div>
           <div className="mt-3 space-y-1.5 font-mono text-xs">
-            <Row label="rebate bid fee locked by resolver" value={"−" + usd(rebateUsd)} bad />
-            <Row label="rebate bid fee paid to submitter" value={"−" + usd(rebateUsd)} bad />
+            <Row label="places the order through Byreal skill" value="handled" />
+            <Row label="funds the submitter's rebate bid fee" value={"−" + usd(rebateUsd)} bad />
             <Row label={`remaining resolver edge (${winner.edgeBps}bps model)`} value={"+" + usd(resolverAlpha)} />
           </div>
-          <div className="mt-2 text-[11px] text-ink-faint">resolver spends the rebate bid fee to win the order flow</div>
+          <div className="mt-2 text-[11px] text-ink-faint">resolver wins by handling execution and attaching a rebate bid fee to the order</div>
         </div>
       </div>
       <p className="mt-3 text-center font-mono text-[11px] text-ink-faint">
-        settlement direction: submitter places the order and creates the rebate bid fee claim; resolver escrows and pays that fee through the auction system
+        settlement direction: resolver handles the order through the auction system; submitter earns the rebate bid fee
       </p>
     </div>
   );
