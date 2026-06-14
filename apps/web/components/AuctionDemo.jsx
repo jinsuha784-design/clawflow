@@ -13,6 +13,8 @@ const RESOLVERS = [
   { name: "carry-bot", edgeBps: 9 },
 ];
 
+const EXECUTION_TX_HASH = "0xe9a6…e181";
+
 const r2 = (x) => Math.round(x * 100) / 100;
 const usd = (x) => "$" + (Math.round(x * 100) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 });
 
@@ -201,7 +203,7 @@ function FlowGraph({ step, wIndex, winner, order }) {
         {/* 6: winner reports execution back through auction */}
         <Edge active={step === 6} done={step > 6} color="ink"
           d={`M ${win.x} ${cy(win) + 28} L ${au.x + au.w} ${cy(au) + 30}`}
-          label="Byreal order id" lx={574} ly={258} />
+          label="execution tx hash" lx={574} ly={258} />
         <Edge active={step === 6} done={step > 6} color="ink"
           d={`M ${au.x} ${cy(au) + 42} L ${a.x + a.w} ${cy(a) + 34}`}
           label="order result" lx={238} ly={366} />
@@ -343,10 +345,10 @@ function Payoff({ show, order, winner, rebateUsd, resolverAlpha }) {
             <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">Resolver · operator</span>
             <span className="font-mono text-xs text-ink-soft">{winner.name}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Handles order on behalf of submitter</div>
-          <div className="font-display text-3xl font-extrabold text-flow-600">Byreal</div>
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Execution proof returned to auction</div>
+          <div className="font-mono text-3xl font-extrabold text-flow-600">{EXECUTION_TX_HASH}</div>
           <div className="mt-3 space-y-1.5 font-mono text-xs">
-            <Row label="places the order through Byreal skill" value="handled" />
+            <Row label="handles order through wrapped Byreal skill" value="handled" />
             <Row label="funds the submitter's rebate bid fee" value={"−" + usd(rebateUsd)} bad />
             <Row label={`remaining resolver edge (${winner.edgeBps}bps model)`} value={"+" + usd(resolverAlpha)} />
           </div>
