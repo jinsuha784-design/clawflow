@@ -22,13 +22,13 @@ const handler = createMcpHandler(
         encryptedPayloadHash: z.string().optional(),
       },
       async (args) => {
-        const a = store.createAuction(args);
+        const a = await store.createAuction(args);
         return text({ auctionId: a.id, deadline: a.deadline });
       }
     );
 
     server.tool("list_open_auctions", "List currently open auctions.", {}, async () =>
-      text(store.openAuctions())
+      text(await store.openAuctions())
     );
 
     server.tool(
@@ -45,21 +45,21 @@ const handler = createMcpHandler(
         rebateEscrowTx: z.string().optional(),
         rebateWei: z.string().optional(),
       },
-      async (b) => text({ ok: store.addBid(b.auctionId, b) })
+      async (b) => text({ ok: await store.addBid(b.auctionId, b) })
     );
 
     server.tool(
       "get_result",
       "Get the auction result (winner + settlement) once the window has closed.",
       { auctionId: z.string() },
-      async ({ auctionId }) => text(store.result(auctionId))
+      async ({ auctionId }) => text(await store.result(auctionId))
     );
 
     server.tool(
       "settle",
       "Finalize an auction and return the on-chain settlement payload for FlowReceipt.",
       { auctionId: z.string() },
-      async ({ auctionId }) => text(store.settlePayload(auctionId))
+      async ({ auctionId }) => text(await store.settlePayload(auctionId))
     );
   },
   {},
