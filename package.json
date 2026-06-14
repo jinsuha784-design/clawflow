@@ -1,0 +1,13 @@
+{
+  "name": "clawflow",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ClawFlow — agentic order-flow auction (PFOF for agents) on Byreal x Mantle",
+  "packageManager": "pnpm@9.7.0",
+  "scripts": {
+    "dev:web": "pnpm --filter @clawflow/web dev",
+    "dev:mcp": "pnpm --filter @clawflow/mcp-server dev",
+    "demo": "node packages/agents/src/run-demo.mjs",
+    "build": "pnpm -r build"
+  }
+}

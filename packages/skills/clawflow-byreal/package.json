@@ -1,0 +1,12 @@
+{
+  "name": "@clawflow/byreal-skill",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "clawflow-auction-order": "./bin/clawflow-auction-order.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.1"
+  }
+}

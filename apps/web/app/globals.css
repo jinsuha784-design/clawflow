@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #fdfeff;
+}
+
+body {
+  font-family: "Spline Sans", system-ui, sans-serif;
+  color: #09090b;
+  background-color: #fdfeff;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: none;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+::selection {
+  background: rgba(16, 21, 27, 0.14);
+}
+
+.fade-edges {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.flow-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

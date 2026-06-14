@@ -1,0 +1,19 @@
+{
+  "chainId": 5000,
+  "network": "mantle-mainnet",
+  "rpcUrl": "https://rpc.mantle.xyz",
+  "flowReceipt": "0xf7F78BfCddA8cddB24c0915495257E593f47B117",
+  "deployer": "0x8619624a7F4d0Cc79Cc565B0E35CFb242389fd93",
+  "deployedBlock": 96646231,
+  "deployTx": "0x5b311e807486edaaf2ec7369752e18bb269177258c44cdb853e5cefb7fb0c0cf",
+  "test": {
+    "rebateMnt": "0.000001",
+    "escrowId": "0x71319983a3b53c2a21a1526cbaead73bded95edf4a6f4865534db9bea45c1705",
+    "orderHash": "0xac5faf34091f7b33a5f29d18cc5eab603f9977c9ffa205d6e441c9832b45fcef",
+    "encryptedPayloadHash": "0xee5d55cb348cdc8c61a58e9cd378d802940f24de07fbdbf5954d6c18e3ea3246",
+    "lockTx": "0x26ee2e79d0379a89fa6a33d2e952464d6fa21e4d5b6ed0c23beca905cdd9f05f",
+    "settleTx": "0xfbf8c9e3ae14ce06ec1c42a394c2f97e65806b0ba7119596f0c5b2a68507d0dd",
+    "receiptId": "1",
+    "settledBlock": 96646239
+  }
+}

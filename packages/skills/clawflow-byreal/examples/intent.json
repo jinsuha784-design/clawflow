@@ -1,0 +1,9 @@
+{
+  "side": "buy",
+  "coin": "BTC",
+  "size": 0.5,
+  "limitPrice": 95000,
+  "fairValue": 94850,
+  "windowMs": 30000,
+  "user": "0x000000000000000000000000000000000000dEaD"
+}
