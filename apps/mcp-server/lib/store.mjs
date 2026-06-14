@@ -1,7 +1,7 @@
 // In-memory auction store. Shared across all client connections within a single process
 // (local `next dev` or one warm Vercel instance) — perfect for the multi-terminal demo.
 // For multi-instance production, back this with Upstash/Redis.
-import { selectWinner, baseline, settlement } from "@clawflow/core";
+import { selectWinner, baseline, settlement } from "./auction.mjs";
 
 const auctions = new Map();
 let seq = 1;

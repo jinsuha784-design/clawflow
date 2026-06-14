@@ -39,10 +39,12 @@ Recommended Vercel project settings:
 ```text
 Root Directory: apps/mcp-server
 Framework Preset: Next.js
-Install Command: pnpm install
-Build Command: pnpm --filter @clawflow/mcp-server build
-Output Directory: .next
+Install Command: npm install
+Build Command: npm run build
+Output Directory: Next.js default
 ```
+
+The MCP server is intentionally standalone for Vercel deploys. It does not require the monorepo workspace packages at build time.
 
 Because Vercel serverless functions can run on different instances, production deployments should use Redis-backed state.
 
@@ -80,4 +82,3 @@ For the most reliable video recording:
 - Use local MCP for the live four-agent terminal scene.
 - Use Vercel MCP to demonstrate that the auction venue is deployable as public infrastructure.
 - Use Mantle Explorer links to prove the real on-chain settlement path.
-

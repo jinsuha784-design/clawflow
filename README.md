@@ -87,8 +87,7 @@ forge create src/FlowReceipt.sol:FlowReceipt --rpc-url $MANTLE_RPC --private-key
 See `packages/contracts/README.md`.
 
 ## Deploy web + MCP (Vercel)
-Two projects from this repo: root dir `apps/web` and `apps/mcp-server` (keep "Include files
-outside root directory" ON). MCP endpoint: `https://<mcp>.vercel.app/mcp`.
+Two projects from this repo: root dir `apps/web` and `apps/mcp-server`. The MCP server is standalone and deploys from `apps/mcp-server` with the default Next.js settings. MCP endpoint: `https://<mcp>.vercel.app/mcp`.
 For multi-instance serverless, set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` so the MCP auction state is shared across Vercel function instances. See `apps/mcp-server/README.md`.
 
 ## Scoring focus

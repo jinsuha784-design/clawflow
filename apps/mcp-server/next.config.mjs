@@ -1,5 +1,3 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  transpilePackages: ["@clawflow/core"],
-};
+const nextConfig = {};
 export default nextConfig;
