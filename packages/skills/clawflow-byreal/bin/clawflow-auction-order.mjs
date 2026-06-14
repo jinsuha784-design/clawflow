@@ -7,6 +7,7 @@ function readArgs(argv) {
   const out = {};
   for (let i = 0; i < argv.length; i += 1) {
     const key = argv[i];
+    if (key === "--") continue;
     if (!key.startsWith("--")) continue;
     out[key.slice(2)] = argv[i + 1];
     i += 1;

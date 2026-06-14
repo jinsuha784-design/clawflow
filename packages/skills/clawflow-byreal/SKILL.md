@@ -18,7 +18,8 @@ This skill is intended to be copied into, or layered on top of, the existing Byr
 ```bash
 MCP_URL=http://localhost:3001/mcp \
 USER_ADDRESS=0xYourMantleAddress \
-clawflow-auction-order --side buy --coin BTC --size 0.5 --limit 95000 --fair 94850 --window 8000
+pnpm --filter @clawflow/byreal-skill auction-order -- \
+  --side buy --coin BTC --size 0.5 --limit 95000 --fair 94850 --window 8000
 ```
 
 ## Forking Existing Byreal Skill

@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "scripts": {
+    "auction-order": "node ./bin/clawflow-auction-order.mjs"
+  },
   "bin": {
     "clawflow-auction-order": "./bin/clawflow-auction-order.mjs"
   },

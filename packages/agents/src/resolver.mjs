@@ -24,12 +24,14 @@ export async function runResolver({ makerId, decide }) {
     JSON.parse((await client.callTool({ name, arguments: args })).content?.[0]?.text ?? "null");
 
   const bidded = new Map(); // auctionId -> order
+  const pending = new Set();
   const resolved = new Set();
 
   setInterval(async () => {
     // 1) bid on newly opened auctions
     for (const a of (await call("list_open_auctions")) ?? []) {
-      if (bidded.has(a.id)) continue;
+      if (bidded.has(a.id) || pending.has(a.id)) continue;
+      pending.add(a.id);
       const fv = a.order.fairValue ?? a.order.limitPrice;
       const bid = await decide(a.order, fv);
       const escrowId = ethers.id(`${a.orderHash}:${makerId}`);
@@ -46,6 +48,7 @@ export async function runResolver({ makerId, decide }) {
           console.log(`[${makerId}] locked rebate for ${a.id}: ${rebateEscrowTx}`);
         } catch (e) {
           console.log(`[${makerId}] skip ${a.id}: rebate escrow failed (${e.message})`);
+          pending.delete(a.id);
           continue;
         }
       }
@@ -58,6 +61,7 @@ export async function runResolver({ makerId, decide }) {
         rebateWei: rebateWei.toString(),
       });
       bidded.set(a.id, a.order);
+      pending.delete(a.id);
       console.log(`[${makerId}] bid ${a.id}: fill ${bid.fillPrice} (+${bid.improvementBps}bps, +${bid.rebateBps}bps rebate)`);
     }
     // 2) resolve auctions I bid on

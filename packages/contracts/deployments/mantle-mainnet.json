@@ -15,5 +15,17 @@
     "settleTx": "0xfbf8c9e3ae14ce06ec1c42a394c2f97e65806b0ba7119596f0c5b2a68507d0dd",
     "receiptId": "1",
     "settledBlock": 96646239
+  },
+  "skillFlowTest": {
+    "rebateMnt": "0.000001",
+    "auctionId": "auc_1",
+    "escrowId": "0x5348396140f7daf3e1ddcc85793bb4416d2a9d3e71ccf1c01cf81608d827ec50",
+    "orderHash": "0x6175635f31000000000000000000000000000000000000000000000000000000",
+    "encryptedPayloadHash": "0x6295916b7d99d2632b538b2ca279985f3e70b649ba1f892cfde0f519c761d7bb",
+    "lockTx": "0x93666e30d9fe5bfad48e95606ac77b30dbd367278e7852e47813c8f9f5c66073",
+    "settleTx": "0xe9a69644476b124920277d220d0d1433caba2c4d03711dd7c76182053c39e181",
+    "receiptId": "2",
+    "lockBlock": 96646530,
+    "settledBlock": 96646534
   }
 }
