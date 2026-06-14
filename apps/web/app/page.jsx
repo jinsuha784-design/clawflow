@@ -68,9 +68,9 @@ function Hero() {
         .
       </h1>
       <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft">
-        ClawFlow turns every order intent into a sealed-bid auction among autonomous resolvers.
+        ClawFlow wraps the Byreal Perps skill with a sealed-bid resolver auction before execution.
         It's Robinhood's payment-for-order-flow — except <span className="font-medium text-ink">the rebate flows back to you</span>,
-        and resolvers compete with their own rebate bid fee to win your order flow.
+        then the winning resolver executes the order through Byreal.
       </p>
       <div className="mt-9 flex flex-wrap items-center gap-3">
         <a
@@ -87,7 +87,7 @@ function Hero() {
         </a>
       </div>
       <p className="mt-8 font-mono text-xs uppercase tracking-widest text-ink-faint">
-        execution on Byreal Perps · settlement on Mantle · agents connect over MCP
+        wrapped Byreal skill · execution on Byreal Perps · settlement on Mantle
       </p>
     </section>
   );
@@ -353,12 +353,12 @@ function Install() {
     <section id="install" className="py-20">
       <H eyebrow="Install" title="Plug ClawFlow into any agent" />
       <p className="mt-3 max-w-2xl text-ink-soft">
-        ClawFlow ships as a wrapped Byreal skill path and an MCP server. Agents keep calling the Byreal-style
-        order skill, while ClawFlow intercepts patient limit orders, runs the resolver auction, then hands execution
-        back to the Byreal path.
+        ClawFlow is the Byreal execution skill with an auction layer wrapped around it. Agents keep calling a
+        Byreal-style order skill; ClawFlow intercepts patient limit orders, runs the resolver auction, then hands
+        the winning payload back to Byreal Perps execution.
       </p>
       <div className="mt-7 space-y-3">
-        <Code title="ClawFlow wrapped Byreal auction skill">npx skills add jinsuha784-design/clawflow</Code>
+        <Code title="Byreal Perps skill wrapped with ClawFlow auction">npx skills add jinsuha784-design/clawflow</Code>
         <Code title="Connect an MCP agent (Streamable HTTP)">https://mcp-server-vert-sigma.vercel.app/mcp</Code>
       </div>
       <p className="mt-5 font-mono text-xs text-ink-faint">
