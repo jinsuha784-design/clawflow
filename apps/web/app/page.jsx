@@ -68,9 +68,10 @@ function Hero() {
         .
       </h1>
       <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft">
-        ClawFlow wraps the Byreal Perps skill with a sealed-bid resolver auction before execution.
-        It's Robinhood's payment-for-order-flow — except <span className="font-medium text-ink">the rebate flows back to you</span>,
-        then the winning resolver executes the order through Byreal.
+        ClawFlow introduces a PFOF auction system for agentic trading by wrapping the Byreal Perps
+        skill with a sealed-bid resolver market before execution. Resolvers compete for order flow,
+        <span className="font-medium text-ink"> the rebate flows back to you</span>, and the winner
+        executes through Byreal.
       </p>
       <div className="mt-9 flex flex-wrap items-center gap-3">
         <a
