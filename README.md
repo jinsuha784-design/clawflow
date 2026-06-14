@@ -7,6 +7,7 @@
 Built for the **Mantle Turing Test Hackathon — Agentic Economy Track (Byreal)**.
 Full spec & rubric mapping: `../ClawFlow_spec.md`.
 Demo scenario: `DEMO_SCENARIO.md`.
+Live recording runbook: `DEMO_RUNBOOK.md`.
 
 ## How it works
 1. **Intent** — the user agent submits `buy 0.5 BTC @ 95,000` (with its Mantle payout address).
