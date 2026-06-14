@@ -351,14 +351,18 @@ function TwoSided() {
 function Install() {
   return (
     <section id="install" className="py-20">
-      <H eyebrow="Install" title="Plug ClawFlow into any agent" />
+      <H eyebrow="Install" title="Add ByrealFlow to Codex or Claude" />
       <p className="mt-3 max-w-2xl text-ink-soft">
-        ClawFlow is the Byreal execution skill with an auction layer wrapped around it. Agents keep calling a
-        Byreal-style order skill; ClawFlow intercepts patient limit orders, runs the resolver auction, then hands
-        the winning payload back to Byreal Perps execution.
+        ByrealFlow is the Byreal execution skill with the ClawFlow auction layer wrapped around it. Agents keep
+        calling a Byreal-style order skill; the wrapper intercepts patient limit orders, runs the resolver auction,
+        then hands the winning payload back to Byreal Perps execution.
       </p>
       <div className="mt-7 space-y-3">
-        <Code title="Byreal Perps skill wrapped with ClawFlow auction">npx skills add jinsuha784-design/clawflow</Code>
+        <Code title="Install for Codex">npx skills add jinsuha784-design/clawflow --agent codex --yes</Code>
+        <Code title="Install for Claude Code">npx skills add jinsuha784-design/clawflow --agent claude-code --yes</Code>
+        <Code title="Install for both demo agents">
+          npx skills add jinsuha784-design/clawflow --agent codex --agent claude-code --yes
+        </Code>
       </div>
     </section>
   );

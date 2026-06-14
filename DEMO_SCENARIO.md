@@ -40,12 +40,13 @@ The point is not to replace Byreal. The point is to make Byreal's agent skill sm
 Show the install section on the landing page:
 
 ```bash
-npx skills add jinsuha784-design/clawflow
+npx skills add jinsuha784-design/clawflow --agent codex --agent claude-code --yes
 ```
 
 Explain:
 
 - `jinsuha784-design/clawflow` is our wrapped/forked Byreal skill path.
+- The same wrapper skill can be added to Codex and Claude Code.
 - It behaves like the Byreal execution skill from the agent's point of view.
 - It intercepts patient limit orders before Byreal execution.
 - The final fill still goes through Byreal Perps.

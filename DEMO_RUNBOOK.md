@@ -44,10 +44,10 @@ Install dependencies:
 pnpm install
 ```
 
-Install the public skill from GitHub:
+Install the public wrapper skill from GitHub for Codex and Claude Code:
 
 ```bash
-npx skills add jinsuha784-design/clawflow
+npx skills add jinsuha784-design/clawflow --agent codex --agent claude-code --yes
 ```
 
 Use the deployed Mantle mainnet contract:
@@ -269,13 +269,13 @@ Show these sections:
 4. Install section:
 
 ```bash
-npx skills add jinsuha784-design/clawflow
+npx skills add jinsuha784-design/clawflow --agent codex --agent claude-code --yes
 ```
 
 Voiceover:
 
 ```text
-This is the product proposal. ClawFlow is a wrapped Byreal skill path: the agent thinks it is placing a Byreal-style order, but patient limit orders are intercepted, auctioned to resolvers, then handed back to Byreal execution with a rebate proof.
+This is the product proposal. ByrealFlow is a wrapped Byreal skill path powered by ClawFlow: Codex or Claude can call one Byreal-style order skill, but patient limit orders are intercepted, auctioned to resolvers, then handed back to Byreal execution with a rebate proof.
 ```
 
 ## Recommended Video Timeline
