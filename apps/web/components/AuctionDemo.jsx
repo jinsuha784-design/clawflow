@@ -36,6 +36,7 @@ function computeBids(order) {
 const N = {
   agent: { x: 40, y: 208, w: 132, h: 96 },
   auction: { x: 305, y: 196, w: 200, h: 120 },
+  contract: { x: 330, y: 410, w: 160, h: 82 },
   resolvers: [
     { x: 656, y: 60, w: 132, h: 92 },
     { x: 656, y: 210, w: 132, h: 92 },
@@ -143,7 +144,7 @@ export default function AuctionDemo() {
 }
 
 function FlowGraph({ step, wIndex, winner, order }) {
-  const a = N.agent, au = N.auction, rs = N.resolvers;
+  const a = N.agent, au = N.auction, ct = N.contract, rs = N.resolvers;
   const win = rs[wIndex];
 
   return (
@@ -173,18 +174,18 @@ function FlowGraph({ step, wIndex, winner, order }) {
             label={i === 0 ? "broadcast" : null} lx={560} ly={150} />
         ))}
 
-        {/* 2: resolvers lock rebate before executable bids */}
+        {/* 2: resolvers lock rebate on the Mantle contract before executable bids */}
         {rs.map((r, i) => (
           <Edge key={"escrow" + i} active={step === 2} done={step > 2} color="flow"
-            d={`M ${r.x + 10} ${cy(r) + 32} Q 555 500 ${au.x + au.w - 18} ${cy(au) + 46}`}
-            label={i === 1 ? "lockRebate tx" : null} lx={560} ly={486} flow />
+            d={`M ${r.x + 10} ${cy(r) + 32} Q 590 482 ${ct.x + ct.w} ${cy(ct)}`}
+            label={i === 1 ? "lockRebate(escrowId, orderHash)" : null} lx={604} ly={474} flow />
         ))}
 
-        {/* 3: resolvers -> auction (bids) */}
+        {/* 3: resolvers -> auction (bids with contract proof) */}
         {rs.map((r, i) => (
           <Edge key={"bid" + i} active={step === 3} done={step > 3} color="ink"
             d={`M ${r.x} ${cy(r) + 8} L ${au.x + au.w} ${cy(au) + 12}`}
-            label={i === 1 ? "bid + pubkey" : null} lx={560} ly={300} />
+            label={i === 1 ? "bid + pubkey + escrow tx" : null} lx={574} ly={300} />
         ))}
 
         {/* 4: auction -> winner */}
@@ -208,17 +209,24 @@ function FlowGraph({ step, wIndex, winner, order }) {
           d={`M ${au.x} ${cy(au) + 42} L ${a.x + a.w} ${cy(a) + 34}`}
           label="order result" lx={238} ly={366} />
 
-        {/* 7: settlement result returns through auction */}
+        {/* 7: winner settles on FlowReceipt, then the result returns through auction */}
         <Edge active={step === 7} done={step > 7} color="flow"
-          d={`M ${win.x} ${cy(win) + 42} Q 574 520 ${au.x + au.w - 18} ${cy(au) + 50}`}
-          label="settle receipt" lx={588} ly={492} flow />
+          d={`M ${win.x} ${cy(win) + 42} Q 596 512 ${ct.x + ct.w} ${cy(ct) + 10}`}
+          label="settleWithEncryptedPayload" lx={626} ly={514} flow />
         <Edge active={step === 7} done={step > 7} color="flow"
-          d={`M ${au.x + 20} ${cy(au) + 54} Q 238 500 ${a.x + a.w} ${cy(a) + 44}`}
-          label="rebate released + receipt" lx={348} ly={520} flow />
+          d={`M ${ct.x + 16} ${cy(ct) - 18} Q 442 354 ${au.x + au.w - 12} ${cy(au) + 48}`}
+          label="AuctionSettled event" lx={448} ly={374} flow />
+        <Edge active={step === 7} done={step > 7} color="flow"
+          d={`M ${ct.x} ${cy(ct) + 18} Q 238 520 ${a.x + a.w} ${cy(a) + 44}`}
+          label="rebate paid onchain" lx={302} ly={520} flow />
 
         {/* ---- nodes ---- */}
         <Node n={a} title="Your Agent" sub={order.agent} active={[0, 5, 6, 7].includes(step)} tone="agent" />
         <Node n={au} title="Auction System" sub="ClawFlow MCP" big active={[1, 3, 4, 5, 6, 7].includes(step)} tone="auction" />
+        <Node n={ct} title="FlowReceipt" sub="Mantle contract" active={[2, 7].includes(step)} tone="contract" />
+        <text x={ct.x + ct.w / 2} y={ct.y + ct.h + 16} textAnchor="middle" className="font-mono" fontSize="10" fill={CHART.muted}>
+          0xf7F…B117
+        </text>
         {rs.map((r, i) => (
           <Node
             key={i}
