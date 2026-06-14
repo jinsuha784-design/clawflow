@@ -16,7 +16,6 @@ This skill is intended to be copied into, or layered on top of, the existing Byr
 ## Demo Command
 
 ```bash
-MCP_URL=http://localhost:3001/mcp \
 USER_ADDRESS=0xYourMantleAddress \
 pnpm --filter @clawflow/byreal-skill auction-order -- \
   --side buy --coin BTC --size 0.5 --limit 95000 --fair 94850 --window 8000
@@ -34,13 +33,13 @@ Keep the original Byreal install/auth/config instructions unchanged. ClawFlow on
 ## Required Environment
 
 ```bash
-MCP_URL=https://your-clawflow-mcp.vercel.app/mcp
 USER_ADDRESS=0xUserRebateAddress
 ```
 
 Optional:
 
 ```bash
+MCP_URL=https://mcp-server-vert-sigma.vercel.app/mcp
 WINDOW_MS=30000
 ```
 

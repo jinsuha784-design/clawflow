@@ -23,7 +23,8 @@ if (missing.length) {
   process.exit(1);
 }
 
-const mcpUrl = process.env.MCP_URL ?? "http://localhost:3001/mcp";
+const DEFAULT_MCP_URL = "https://mcp-server-vert-sigma.vercel.app/mcp";
+const mcpUrl = process.env.MCP_URL ?? DEFAULT_MCP_URL;
 const client = new Client({ name: "clawflow-byreal-skill", version: "0.1.0" });
 await client.connect(new StreamableHTTPClientTransport(new URL(mcpUrl)));
 

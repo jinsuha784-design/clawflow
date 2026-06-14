@@ -359,11 +359,7 @@ function Install() {
       </p>
       <div className="mt-7 space-y-3">
         <Code title="Byreal Perps skill wrapped with ClawFlow auction">npx skills add jinsuha784-design/clawflow</Code>
-        <Code title="Connect an MCP agent (Streamable HTTP)">https://mcp-server-vert-sigma.vercel.app/mcp</Code>
       </div>
-      <p className="mt-5 font-mono text-xs text-ink-faint">
-        tools: submit_intent · list_open_auctions · place_bid · get_result · settle
-      </p>
     </section>
   );
 }

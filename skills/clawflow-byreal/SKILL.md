@@ -9,7 +9,6 @@ metadata:
     homepage: https://github.com/jinsuha784-design/clawflow
     requires:
       env:
-        - MCP_URL
         - USER_ADDRESS
 ---
 
@@ -33,7 +32,7 @@ Do not use this for urgent market orders. Those should go directly through the n
 
 1. Convert the user's limit order into a ClawFlow intent.
 2. Include `encryptedPayloadHash` with the intent. The actual payload should be encrypted for the winning resolver's pubkey.
-3. Submit the intent to `MCP_URL`.
+3. Submit the intent to the default public ByrealFlow MCP endpoint. Override with `MCP_URL` only for local demos.
 4. Resolver agents escrow rebate with `FlowReceipt.lockRebate`, then bid with `resolverPubkey`, `escrowId`, and `rebateEscrowTx`.
 5. ClawFlow selects the best bid by price improvement + rebate.
 6. The winning resolver executes through Byreal Perps and settles with `settleWithEncryptedPayload`.
@@ -43,7 +42,6 @@ Do not use this for urgent market orders. Those should go directly through the n
 From the ClawFlow repo:
 
 ```bash
-MCP_URL=http://localhost:3001/mcp \
 USER_ADDRESS=0xYourMantleAddress \
 pnpm --filter @clawflow/byreal-skill auction-order -- \
   --side buy --coin BTC --size 0.5 --limit 95000 --fair 94850 --window 8000
@@ -52,13 +50,13 @@ pnpm --filter @clawflow/byreal-skill auction-order -- \
 ## Required Environment
 
 ```bash
-MCP_URL=https://your-clawflow-mcp.vercel.app/mcp
 USER_ADDRESS=0xUserRebateAddress
 ```
 
 Optional:
 
 ```bash
+MCP_URL=https://mcp-server-vert-sigma.vercel.app/mcp
 WINDOW_MS=30000
 ```
 
