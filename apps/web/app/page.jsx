@@ -15,7 +15,7 @@ export default function Home() {
         <H eyebrow="Live auction" title="Watch order intents get auctioned in real time" />
         <p className="mb-8 max-w-2xl text-ink-soft">
           Agents stream order intents into ClawFlow. Each one is broadcast to competing resolvers, scored on
-          price improvement <span className="text-ink">+</span> rebate, filled on Byreal, and settled on Mantle —
+          rebate bid fee <span className="text-ink">+</span> execution terms, placed on Byreal, and settled on Mantle —
           autonomously, on loop.
         </p>
         <AuctionDemo />
@@ -68,9 +68,9 @@ function Hero() {
         .
       </h1>
       <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft">
-        ClawFlow turns every order intent into a sealed-bid, price-improvement auction among autonomous resolvers.
+        ClawFlow turns every order intent into a sealed-bid auction among autonomous resolvers.
         It's Robinhood's payment-for-order-flow — except <span className="font-medium text-ink">the rebate flows back to you</span>,
-        and resolvers compete with their own alpha to win your fill.
+        and resolvers compete with their own rebate bid fee to win your order flow.
       </p>
       <div className="mt-9 flex flex-wrap items-center gap-3">
         <a
@@ -120,8 +120,8 @@ function Marquee() {
 function Insight() {
   const items = [
     ["A resting limit order is free alpha.", "Passive orders get adversely selected — you capture none of the spread you create for the market."],
-    ["Patient flow is valuable.", "Non-toxic, uninformed order flow is exactly what market makers will pay real money to fill."],
-    ["So we auction it.", "Resolvers compete for your order; the price improvement + rebate are routed straight back to you."],
+    ["Patient flow is valuable.", "Non-toxic, uninformed order flow is exactly what market makers will pay real money to access."],
+    ["So we auction it.", "Resolvers compete for your order; the rebate bid fee is routed straight back to you."],
   ];
   return (
     <section className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-flow-100 bg-flow-100 py-px sm:grid-cols-3">
@@ -140,8 +140,8 @@ function HowItWorks() {
   const steps = [
     ["Intent", "An agent submits “buy 0.5 BTC @ 95,000” over MCP with a hash of the encrypted execution payload."],
     ["Escrowed auction", "Resolvers must lock rebate MNT in FlowReceipt before their bid is executable."],
-    ["Winner handoff", "ClawFlow selects the best price improvement + rebate and routes the payload only to the winner's pubkey."],
-    ["Execute & settle", "The winner fills on Byreal Perps; Mantle releases escrow to the user and records the receipt."],
+    ["Winner handoff", "ClawFlow selects the best rebate-backed bid and routes the payload only to the winner's pubkey."],
+    ["Execute & settle", "The winner places the order on Byreal Perps; Mantle releases escrow to the user and records the receipt."],
   ];
   return (
     <section id="how" className="py-20">
@@ -193,21 +193,21 @@ function Workflow() {
     {
       lane: "Resolvers",
       title: "Bid with pubkey",
-      body: "Bids include fill price, rebate, resolver pubkey, escrowId, and escrow tx.",
-      proof: "no escrow, no fill",
+      body: "Bids include execution terms, rebate bid fee, resolver pubkey, escrowId, and escrow tx.",
+      proof: "no escrow, no bid",
       tone: "flow",
     },
     {
       lane: "Auction MCP",
       title: "Select winner",
-      body: "Scores price improvement + rebate, then routes the encrypted payload to the winning resolver.",
+      body: "Scores rebate bid fee + execution terms, then routes the encrypted payload to the winning resolver.",
       proof: "best user value",
       tone: "neutral",
     },
     {
       lane: "Byreal Perps",
-      title: "Execute fill",
-      body: "Winner decrypts the payload and executes the order through the forked Byreal skill path.",
+      title: "Place order",
+      body: "Winner decrypts the payload and places the order through the forked Byreal skill path.",
       proof: "Byreal order id",
       tone: "muted",
     },
@@ -225,7 +225,7 @@ function Workflow() {
       <H eyebrow="Workflow" title="Escrow first, encrypted handoff, then verifiable settlement" />
       <p className="mt-3 max-w-2xl text-ink-soft">
         The bid is only trusted after money is locked. The order payload is only useful to the winner. The final
-        tx proves who won, what was filled, and where the rebate went.
+        tx proves who won, which order was placed, and where the rebate went.
       </p>
 
       <div className="mt-10 overflow-hidden rounded-2xl border border-flow-100 bg-white shadow-card">
@@ -318,8 +318,8 @@ function ValueFlow() {
             ← VALUE
           </span>
           <p className="text-sm text-ink-soft">
-            The captured edge splits <span className="font-medium text-rebate">back</span>: rebate + price
-            improvement to the submitter, the rest of the alpha kept by the winning resolver.
+            The captured edge splits <span className="font-medium text-rebate">back</span>: the rebate bid fee goes
+            to the submitter, and any remaining alpha stays with the winning resolver.
           </p>
         </div>
       </div>
@@ -334,7 +334,7 @@ function TwoSided() {
         accent="rebate"
         tag="For intent submitters"
         title="Get paid to be patient"
-        body="Earn a rebate + price improvement on orders you were going to place anyway. If you're not latency-sensitive, that's pure extra yield on flow you already had."
+        body="Place the order you were going to place anyway, then create a rebate bid fee claim that the winning resolver pays through escrow."
         chip="you earn → rebate"
       />
       <Card

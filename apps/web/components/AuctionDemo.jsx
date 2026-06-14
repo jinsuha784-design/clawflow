@@ -46,10 +46,10 @@ const STEPS = [
   { actor: "Your Agent", color: "ink", title: "Submit intent", desc: "Your agent sends a limit order plus encryptedPayloadHash to the auction venue over MCP." },
   { actor: "Auction System", color: "ink", title: "Broadcast orderHash", desc: "ClawFlow broadcasts the order terms and orderHash to every connected resolver." },
   { actor: "Resolvers", color: "flow", title: "Lock rebate", desc: "Resolvers escrow rebate MNT in FlowReceipt before their bids become executable." },
-  { actor: "Resolvers", color: "ink", title: "Bid with pubkey", desc: "Each bid includes fill price, rebate, resolver pubkey, escrowId, and escrow tx." },
-  { actor: "Auction System", color: "red", title: "Winner selected", desc: "Best total value wins: price improvement plus escrow-backed rebate." },
+  { actor: "Resolvers", color: "ink", title: "Bid with pubkey", desc: "Each bid includes execution terms, rebate bid fee, resolver pubkey, escrowId, and escrow tx." },
+  { actor: "Auction System", color: "red", title: "Winner selected", desc: "Best rebate-backed bid wins, then ClawFlow routes the payload through the auction system." },
   { actor: "Your Agent", color: "flow", title: "Encrypted handoff", desc: "The execution payload is routed only for the winning resolver's pubkey." },
-  { actor: "Resolver", color: "ink", title: "Execute on Byreal", desc: "The winner decrypts the payload and executes the fill through Byreal Perps." },
+  { actor: "Resolver", color: "ink", title: "Place on Byreal", desc: "The winner decrypts the payload and places the order through Byreal Perps." },
   { actor: "Mantle", color: "flow", title: "Release rebate", desc: "FlowReceipt settles with encryptedPayloadHash, pays escrow to the user, and emits AuctionSettled." },
 ];
 
@@ -73,11 +73,9 @@ export default function AuctionDemo() {
   const wIndex = bids.findIndex((b) => b.name === winner.name);
 
   const notional = order.size * winner.fill;
-  const saving = Math.abs(order.size * (order.limitPrice - winner.fill));
   const rebateUsd = (notional * winner.rebateBps) / 10000;
   const grossEdge = (notional * winner.edgeBps) / 10000;
   const resolverAlpha = grossEdge - rebateUsd;
-  const youReceive = saving + rebateUsd;
 
   function run(i) {
     timers.current.forEach(clearTimeout);
@@ -134,11 +132,8 @@ export default function AuctionDemo() {
           show={step >= STEPS.length - 1}
           order={order}
           winner={winner}
-          saving={saving}
           rebateUsd={rebateUsd}
-          grossEdge={grossEdge}
           resolverAlpha={resolverAlpha}
-          youReceive={youReceive}
         />
       </div>
     </div>
@@ -195,24 +190,33 @@ function FlowGraph({ step, wIndex, winner, order }) {
           d={`M ${au.x + au.w} ${cy(au) + 26} L ${win.x} ${cy(win)}`}
           label="winner selected" lx={(au.x + au.w + win.x) / 2} ly={cy(win) - 14} red />
 
-        {/* 5: agent -> winner (encrypted payload handoff) */}
+        {/* 5: encrypted payload is routed through auction, not direct to winner */}
         <Edge active={step === 5} done={step > 5} color="flow"
-          d={`M ${win.x} ${cy(win) + 14} Q 400 430 ${a.x + a.w} ${cy(a) + 16}`}
-          label="encrypted payload" lx={400} ly={398} flow />
+          d={`M ${a.x + a.w} ${cy(a) + 14} L ${au.x} ${cy(au) + 28}`}
+          label="encrypted payload" lx={238} ly={318} flow />
+        <Edge active={step === 5} done={step > 5} color="flow"
+          d={`M ${au.x + au.w} ${cy(au) + 2} L ${win.x} ${cy(win) + 18}`}
+          label="winner pubkey" lx={574} ly={214} flow />
 
-        {/* 6: winner executes on Byreal */}
+        {/* 6: winner reports execution back through auction */}
         <Edge active={step === 6} done={step > 6} color="ink"
-          d={`M ${a.x + a.w} ${cy(a) + 28} Q 400 478 ${win.x} ${cy(win) + 26}`}
-          label="Byreal order id" lx={400} ly={462} />
+          d={`M ${win.x} ${cy(win) + 28} L ${au.x + au.w} ${cy(au) + 30}`}
+          label="Byreal order id" lx={574} ly={258} />
+        <Edge active={step === 6} done={step > 6} color="ink"
+          d={`M ${au.x} ${cy(au) + 42} L ${a.x + a.w} ${cy(a) + 34}`}
+          label="order result" lx={238} ly={366} />
 
-        {/* 7: settlement result returns */}
+        {/* 7: settlement result returns through auction */}
         <Edge active={step === 7} done={step > 7} color="flow"
-          d={`M ${win.x} ${cy(win) + 38} Q 400 526 ${a.x + a.w} ${cy(a) + 40}`}
-          label="rebate released + receipt" lx={400} ly={520} flow />
+          d={`M ${win.x} ${cy(win) + 42} Q 574 520 ${au.x + au.w - 18} ${cy(au) + 50}`}
+          label="settle receipt" lx={588} ly={492} flow />
+        <Edge active={step === 7} done={step > 7} color="flow"
+          d={`M ${au.x + 20} ${cy(au) + 54} Q 238 500 ${a.x + a.w} ${cy(a) + 44}`}
+          label="rebate released + receipt" lx={348} ly={520} flow />
 
         {/* ---- nodes ---- */}
-        <Node n={a} title="Your Agent" sub={order.agent} active={[0, 5, 7].includes(step)} tone="agent" />
-        <Node n={au} title="Auction System" sub="ClawFlow MCP" big active={[1, 3, 4].includes(step)} tone="auction" />
+        <Node n={a} title="Your Agent" sub={order.agent} active={[0, 5, 6, 7].includes(step)} tone="agent" />
+        <Node n={au} title="Auction System" sub="ClawFlow MCP" big active={[1, 3, 4, 5, 6, 7].includes(step)} tone="auction" />
         {rs.map((r, i) => (
           <Node
             key={i}
@@ -301,10 +305,10 @@ function Node({ n, title, sub, big, active, winner, tone }) {
   );
 }
 
-function Payoff({ show, order, winner, saving, rebateUsd, grossEdge, resolverAlpha, youReceive }) {
+function Payoff({ show, order, winner, rebateUsd, resolverAlpha }) {
   return (
     <div className={"transition-all duration-500 " + (show ? "translate-y-0 opacity-100" : "translate-y-2 opacity-40")}>
-      <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-ink-faint">Settlement payout</div>
+      <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-ink-faint">Order + rebate bid fee</div>
       <div className="grid items-stretch gap-3 sm:grid-cols-[1fr_auto_1fr]">
         {/* submitter */}
         <div className="rounded-2xl bg-rebate-soft/70 p-5 ring-1 ring-rebate/20">
@@ -312,13 +316,14 @@ function Payoff({ show, order, winner, saving, rebateUsd, grossEdge, resolverAlp
             <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">You · submitter</span>
             <span className="font-mono text-xs text-ink-soft">{order.agent}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Order filled + you get paid</div>
-          <div className="font-display text-3xl font-extrabold text-rebate">+{usd(youReceive)}</div>
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Order placed + rebate claim created</div>
+          <div className="font-display text-3xl font-extrabold text-rebate">+{usd(rebateUsd)}</div>
           <div className="mt-3 space-y-1.5 font-mono text-xs">
-            <Row label={`filled at ${winner.fill.toLocaleString()} (vs ${order.limitPrice.toLocaleString()} limit)`} value={"+" + usd(saving)} good />
-            <Row label="rebate paid to you" value={"+" + usd(rebateUsd)} good />
+            <Row label={`${order.side.toUpperCase()} ${order.size} ${order.coin} order placed`} value={`limit ${order.limitPrice.toLocaleString()}`} />
+            <Row label="rebate bid fee claim created" value={"+" + usd(rebateUsd)} good />
+            <Row label="winner resolver attached to the order" value={winner.name} />
           </div>
-          <div className="mt-2 text-[11px] text-ink-faint">you pay nothing — pure upside on flow you had anyway</div>
+          <div className="mt-2 text-[11px] text-ink-faint">the submitter creates the order intent and rebate bid fee claim before settlement</div>
         </div>
 
         {/* connector */}
@@ -326,8 +331,9 @@ function Payoff({ show, order, winner, saving, rebateUsd, grossEdge, resolverAlp
           <div className="flex flex-col items-center rounded-xl border border-flow-200 bg-white px-3 py-2 text-center shadow-card">
             <span className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">resolver pays</span>
             <span className="font-mono text-sm font-semibold text-flow-600">{usd(rebateUsd)}</span>
-            <span className="text-base leading-none text-flow-400 sm:rotate-180">←</span>
-            <span className="font-mono text-[10px] text-ink-faint">rebate to you</span>
+            <span className="hidden text-base leading-none text-flow-400 sm:inline">←</span>
+            <span className="text-base leading-none text-flow-400 sm:hidden">↑</span>
+            <span className="font-mono text-[10px] text-ink-faint">rebate bid fee</span>
           </div>
         </div>
 
@@ -337,17 +343,18 @@ function Payoff({ show, order, winner, saving, rebateUsd, grossEdge, resolverAlp
             <span className="text-xs font-semibold uppercase tracking-widest text-ink-faint">Resolver · winner</span>
             <span className="font-mono text-xs text-ink-soft">{winner.name}</span>
           </div>
-          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Net profit after paying you</div>
-          <div className="font-display text-3xl font-extrabold text-flow-600">+{usd(resolverAlpha)}</div>
+          <div className="mt-3 text-[11px] uppercase tracking-widest text-ink-faint">Rebate bid fee paid to submitter</div>
+          <div className="font-display text-3xl font-extrabold text-flow-600">−{usd(rebateUsd)}</div>
           <div className="mt-3 space-y-1.5 font-mono text-xs">
-            <Row label={`alpha from filling your flow (${winner.edgeBps}bps)`} value={"+" + usd(grossEdge)} />
-            <Row label="− rebate + price given to you" value={"−" + usd(rebateUsd)} bad />
+            <Row label="rebate bid fee locked by resolver" value={"−" + usd(rebateUsd)} bad />
+            <Row label="rebate bid fee paid to submitter" value={"−" + usd(rebateUsd)} bad />
+            <Row label={`remaining resolver edge (${winner.edgeBps}bps model)`} value={"+" + usd(resolverAlpha)} />
           </div>
-          <div className="mt-2 text-[11px] text-ink-faint">resolver pays out of its own edge to win the flow</div>
+          <div className="mt-2 text-[11px] text-ink-faint">resolver spends the rebate bid fee to win the order flow</div>
         </div>
       </div>
       <p className="mt-3 text-center font-mono text-[11px] text-ink-faint">
-        the resolver escrows rebate first, then earns from its market-making alpha after the Byreal fill settles
+        settlement direction: submitter places the order and creates the rebate bid fee claim; resolver escrows and pays that fee through the auction system
       </p>
     </div>
   );
